@@ -1,5 +1,13 @@
 const Discord = require('discord.js');
-const auth = require('./auth.json');
+let auth;
+try {
+    auth = require('./auth.json');
+}
+catch(e) {
+    auth = {
+        token: process.env.token
+    }
+}
 const bot = new Discord.Client();
 // Number of days per phase
 const daysPerPhase = 3;
