@@ -10,9 +10,9 @@ catch(e) {
 }
 const bot = new Discord.Client();
 // Number of days per phase
-const daysPerPhase = 3;
+const daysPerPhase = 7;
 // Known start of phase 1 in the past
-const start = new Date('2018.10.24 18:00').getTime() / 1000;
+const start = new Date('2018.12.03 18:00').getTime() / 1000;
 
 bot.on('ready', function (evt) {
     console.log('Connected');
@@ -68,23 +68,20 @@ bot.on('message', function (msg) {
         let message = "";
         // out of scope time assignment
         let timeLeft;
-        // Out of scope assignment for phase (only used in phase 4)
-        let phase;
         // number of days since the latest phase 1 start
         let daysSincePhaseOne = daysPassed % (daysPerPhase * 4);
         // Pick message for current phase
-        if (daysSincePhaseOne % 12 < 3) {
-            timeLeft = getTimeLeft(3 - (daysSincePhaseOne % (daysPerPhase * 4)));
+        if (daysSincePhaseOne % (daysPerPhase * 4) < daysPerPhase) {
+            timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % (daysPerPhase * 4)));
             message = "Village is in Phase One. This phase will end in " + timeLeft;
-        } else if (daysSincePhaseOne % 9 < 3) {
-            timeLeft = getTimeLeft(3 - (daysSincePhaseOne % (daysPerPhase * 3)));
+        } else if (daysSincePhaseOne % (daysPerPhase * 3) < daysPerPhase) {
+            timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % (daysPerPhase * 3)));
             message = "Village is in Phase Four. This phase will end in " + timeLeft;
-            phase = 4;
-        } else if (daysSincePhaseOne % 6 < 3) {
-            timeLeft = getTimeLeft(3 - (daysSincePhaseOne % (daysPerPhase * 2)));
+        } else if (daysSincePhaseOne % (daysPerPhase * 2) < daysPerPhase) {
+            timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % (daysPerPhase * 2)));
             message = "Village is in Phase Three. This phase will end in " + timeLeft;
         } else {
-            timeLeft = getTimeLeft(3 - (daysSincePhaseOne % daysPerPhase));
+            timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % daysPerPhase));
             message = "Village is in Phase Two. This phase will end in " + timeLeft;
         }
         // Send message back to the channel that requested it
