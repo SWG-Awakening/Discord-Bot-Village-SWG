@@ -2,7 +2,7 @@
   "name": "village-bot",
   "version": "1.0.1",
   "description": "Enter command to get village status",
-  "main": "bot.js",
+  "main": "villagebot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
