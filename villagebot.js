@@ -22,9 +22,9 @@ const bot = new Client({
 
 
 // Number of days per phase
-const daysPerPhase = 7;
-// Known start of phase 1 in the past
-const start = new Date('2018.12.03 18:00').getTime() / 1000;
+const daysPerPhase = 3;
+// Known start of phase 1 in the past  Mountain Standard Time
+const start = new Date("2023-04-03T11:00:00").getTime() / 1000;
 
 bot.on('ready', function (evt) {
     console.log('Connected');
