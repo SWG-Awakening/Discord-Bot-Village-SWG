@@ -67,7 +67,7 @@ function getTimeLeft(daysLeft) {
     return message;
 }
 
-bot.on('message', function (msg) {
+bot.on("messageCreate", function (msg) {
     // Check for !village or #village from in game
     if (msg.content.startsWith('!village') || (msg.content.split(':**  ').length > 1 && msg.content.split(':**  ')[1].startsWith('#village'))) {
         // today's time
