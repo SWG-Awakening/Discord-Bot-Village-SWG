@@ -22,9 +22,9 @@ const bot = new Client({
 
 
 // Number of days per phase
-const daysPerPhase = 3;
-// Known start of phase 1 in the past  Mountain Standard Time
-const start = new Date("2023-04-03T11:00:00").getTime() / 1000;
+const daysPerPhase = 14;
+// Known start of phase 1 in the past Eastern Standard Time
+const start = new Date("2023-05-21T18:00:00").getTime() / 1000;
 
 bot.on('ready', function (evt) {
     console.log('Connected');
@@ -60,10 +60,13 @@ function getTimeLeft(daysLeft) {
     } else {
         message += ", "
     }
-    if (time.days || time.hours || time.minutes) {
-        message += " and ";
+    if ((time.days || time.hours || time.minutes) && time.seconds) {
+        message += "and ";
     }
     message += `${time.seconds ? `${time.seconds === 1 ? `${time.seconds} second` : `${time.seconds} seconds`}` : ''}`;
+	if (time.seconds) {
+		message += ".";
+	}
     return message;
 }
 
@@ -85,16 +88,16 @@ bot.on("messageCreate", function (msg) {
         // Pick message for current phase
         if (daysSincePhaseOne % (daysPerPhase * 4) < daysPerPhase) {
             timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % (daysPerPhase * 4)));
-            message = "Village is in Phase One. This phase will end in " + timeLeft;
+            message = "The Village is in Phase One. This phase will end in " + timeLeft;
         } else if (daysSincePhaseOne % (daysPerPhase * 3) < daysPerPhase) {
             timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % (daysPerPhase * 3)));
-            message = "Village is in Phase Four. This phase will end in " + timeLeft;
+            message = "The Village is in Phase Four. This phase will end in " + timeLeft;
         } else if (daysSincePhaseOne % (daysPerPhase * 2) < daysPerPhase) {
             timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % (daysPerPhase * 2)));
-            message = "Village is in Phase Three. This phase will end in " + timeLeft;
+            message = "The Village is in Phase Three. This phase will end in " + timeLeft;
         } else {
             timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % daysPerPhase));
-            message = "Village is in Phase Two. This phase will end in " + timeLeft;
+            message = "The Village is in Phase Two. This phase will end in " + timeLeft;
         }
         // Send message back to the channel that requested it
         msg.channel.send(message);
