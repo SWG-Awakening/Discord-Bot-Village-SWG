@@ -10,7 +10,7 @@ catch(e) {
     }
 }
 
-const bot = new Client({
+const client = new Client({
     intents: [
         GatewayIntentBits.DirectMessages,
         GatewayIntentBits.Guilds,
@@ -26,7 +26,7 @@ const daysPerPhase = 14;
 // Known start of phase 1 in the past Eastern Standard Time
 const start = new Date("2023-05-21T18:00:00").getTime() / 1000;
 
-bot.on('ready', function (evt) {
+client.on('ready', function (evt) {
     console.log('Connected');
 });
 
@@ -70,7 +70,7 @@ function getTimeLeft(daysLeft) {
     return message;
 }
 
-bot.on("messageCreate", function (msg) {
+client.on("messageCreate", function (msg) {
     // Check for !village or #village from in game
     if (msg.content.startsWith('!village') || (msg.content.split(':**  ').length > 1 && msg.content.split(':**  ')[1].startsWith('#village'))) {
         // today's time
@@ -104,4 +104,9 @@ bot.on("messageCreate", function (msg) {
     }
 });
 
-bot.login(auth.token);
+client.login(auth.token);
+
+// When the client is ready, run this code (only once)
+client.once(Events.ClientReady, c => {
+    client.user.setPresence({ activities: [{ name: 'Awakening Village Phase Oracle' }], status: 'online' });
+});
