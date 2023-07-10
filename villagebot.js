@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-const { Client, Events, GatewayIntentBits } = require('discord.js');
+const { Client, Events, GatewayIntentBits, Activity } = require('discord.js');
 let auth;
 try {
     auth = require('./auth.json');
@@ -108,5 +108,5 @@ client.login(auth.token);
 
 // When the client is ready, run this code (only once)
 client.once(Events.ClientReady, c => {
-    client.user.setPresence({ activities: [{ name: 'Awakening Village Phase Oracle' }], status: 'online' });
+    client.user.setPresence({ activities: [{ name: 'Village Phase', type: Activity.Watching }], status: 'online' });
 });
