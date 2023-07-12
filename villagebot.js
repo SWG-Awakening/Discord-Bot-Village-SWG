@@ -17,9 +17,10 @@ const client = new Client({
 const daysPerPhase = config.SWG.DaysPerPhase;
 const start = new Date(config.SWG.VillagePhaseOneKnownTime).getTime() / 1000;
 
-client.on('ready', function (evt) {
+// When the client is ready, run this code (only once)
+client.on('ready', () => {
+    console.log(`Ready! Logged in as ${client.user.tag}`);
 	client.user.setPresence({ activities: [{ name: config.Discord.PresenceName, type: ActivityType.Watching }], status: 'online' });
-    console.log('Connected');
 });
 
 function getTime(daysLeft) {
