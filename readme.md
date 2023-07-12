@@ -1,8 +1,8 @@
-# Village Discord Bot
+# Village Phase Discord Bot
 
 This is a discord bot that will listen for:
-    !village (In discord)
-    #village (From in-game when using Progor-Chat as well)
+    !village (in discord)
+    #village (in-game when using Progor-Chat as well)
 
 ## Getting Started
 
@@ -10,29 +10,67 @@ First, create a discord bot. Go to https://discordapp.com/developers, fill out t
 
 Then, invite the bot to your server. Use this link: https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot but replace the Client_ID with the Client ID from the bot you just created.
 
-Create an auth.json file in your root directory that has your secret token
+Download this repository to a folder.  cd to that folder and run
 
+```sh
+npm install
 ```
+
+to install the necessary dependencies (like the Discord client).
+
+Create a file named config.json with these values populated with your server, account, character, and chat room / channel specifics.  You can copy config.example.json to get you started.
+For instance:
+
+```json
 {
-    "token": "YOUR_BOT_TOKEN_HERE"
+    "SWG": {
+		"DaysPerPhase": 14,
+        "VillagePhaseOneKnownTime": "2023-05-21T18:00:00"
+    },
+    "Discord": {
+        "PresenceName": "SERVER_NAME's Village Phases",
+        "BotToken": "Bot token from Discord App Page"
+    }
 }
 ```
 
-In bot.js edit line 5 and line 7 for your needs:
+| Field | Explanation |
+| ------ | ------ |
+| SWG.DaysPerPhase | Days per village phase |
+| SWG.VillagePhaseOneKnownTime| A known date & time for the start of phase one, sometime in the past (Eastern Standard Time). |
+| Discord.PresenceName | The bot's Discord presence will show "Watching Discord.PresenceName" |
+| Discord.BotToken | The application's bot token from the Discord Developer portal |
 
+Finally run the bot with:
+
+```sh
+node villagebot.js
 ```
-// Number of days per phase
-const daysPerPhase = 3;
-// Known start of phase 1 in the past
-const start = new Date('2018.10.24 18:00').getTime() / 1000;
+
+Better yet, to handle any unexpected errors get forever or PM2
+
+```sh
+sudo npm install forever -g
 ```
 
-These constant represents the number of days per phase and the start of phase One, sometime in the past.
+or
 
-## Permissions
+```sh
+sudo npm install pm2 -g
+```
 
-This bot only needs permission to post messages in chat. That's it.
+and run with
+
+```sh
+forever start villagebot.js
+```
+
+or
+
+```sh
+pm2 start villagebot.js
+```
 
 ## Author
 
-This bot was made by Tyler Schum
+This bot was made by Tyler Schum and adapted by Cyclone of Awakening

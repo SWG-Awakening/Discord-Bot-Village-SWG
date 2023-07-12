@@ -1,14 +1,6 @@
 const Discord = require('discord.js');
-const { Client, Events, GatewayIntentBits, Activity } = require('discord.js');
-let auth;
-try {
-    auth = require('./auth.json');
-}
-catch(e) {
-    auth = {
-        token: process.env.token
-    }
-}
+const { Client, Events, GatewayIntentBits, ActivityType } = require('discord.js');
+const config = require('./config.json');
 
 const client = new Client({
     intents: [
@@ -21,12 +13,12 @@ const client = new Client({
 
 
 
-// Number of days per phase
-const daysPerPhase = 14;
-// Known start of phase 1 in the past Eastern Standard Time
-const start = new Date("2023-05-21T18:00:00").getTime() / 1000;
+
+const daysPerPhase = config.SWG.DaysPerPhase;
+const start = new Date(config.SWG.VillagePhaseOneKnownTime).getTime() / 1000;
 
 client.on('ready', function (evt) {
+	client.user.setPresence({ activities: [{ name: config.Discord.PresenceName, type: ActivityType.Watching }], status: 'online' });
     console.log('Connected');
 });
 
@@ -104,9 +96,4 @@ client.on("messageCreate", function (msg) {
     }
 });
 
-client.login(auth.token);
-
-// When the client is ready, run this code (only once)
-client.once(Events.ClientReady, c => {
-    client.user.setPresence({ activities: [{ name: 'Village Phase', type: Activity.Watching }], status: 'online' });
-});
+client.login(config.Discord.BotToken);
