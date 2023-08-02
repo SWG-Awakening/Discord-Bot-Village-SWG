@@ -44,7 +44,7 @@ function getTime(daysLeft) {
 function getTimeLeft(daysLeft) {
     // Generic function to print human legible time remaining based on days
     const time = getTime(daysLeft);
-    message = '';
+    let message = '';
     message += `${time.days ? `${time.days === 1 ? `${time.days} day` : `${time.days} days`}, ` : ''}`;
     message += `${time.hours ? `${time.hours === 1 ? `${time.hours} hour` : `${time.hours} hours`}, ` : ''}`;
     message += `${time.minutes ? `${time.minutes === 1 ? `${time.minutes} minute` : `${time.minutes} minutes`}` : ''}`;
@@ -63,9 +63,10 @@ function getTimeLeft(daysLeft) {
     return message;
 }
 
-client.on("messageCreate", function (msg) {
+client.on("messageCreate", function (message) {
     // Check for !village or #village from in game
-    if (msg.content.startsWith('!village') || (msg.content.split(':**  ').length > 1 && msg.content.split(':**  ')[1].startsWith('#village'))) {
+	let lowerCaseMessageContent = message.content.toLowerCase();
+    if (lowerCaseMessageContent.startsWith('!village') || (lowerCaseMessageContent.split(':**  ').length > 1 && lowerCaseMessageContent.split(':**  ')[1].startsWith('#village'))) {
         // today's time
         const today = new Date().getTime() / 1000;
         // difference in seconds
@@ -73,7 +74,7 @@ client.on("messageCreate", function (msg) {
         // seconds converted to days
         const daysPassed = secondsPassed / 86400;
         // out of scope message assignment
-        let message = "";
+        let response = "";
         // out of scope time assignment
         let timeLeft;
         // number of days since the latest phase 1 start
@@ -81,19 +82,19 @@ client.on("messageCreate", function (msg) {
         // Pick message for current phase
         if (daysSincePhaseOne % (daysPerPhase * 4) < daysPerPhase) {
             timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % (daysPerPhase * 4)));
-            message = "The Village is in Phase One. This phase will end in " + timeLeft;
+            response = "The Village is in Phase One. This phase will end in " + timeLeft;
         } else if (daysSincePhaseOne % (daysPerPhase * 3) < daysPerPhase) {
             timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % (daysPerPhase * 3)));
-            message = "The Village is in Phase Four. This phase will end in " + timeLeft;
+            response = "The Village is in Phase Four. This phase will end in " + timeLeft;
         } else if (daysSincePhaseOne % (daysPerPhase * 2) < daysPerPhase) {
             timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % (daysPerPhase * 2)));
-            message = "The Village is in Phase Three. This phase will end in " + timeLeft;
+            response = "The Village is in Phase Three. This phase will end in " + timeLeft;
         } else {
             timeLeft = getTimeLeft(daysPerPhase - (daysSincePhaseOne % daysPerPhase));
-            message = "The Village is in Phase Two. This phase will end in " + timeLeft;
+            response = "The Village is in Phase Two. This phase will end in " + timeLeft;
         }
-        // Send message back to the channel that requested it
-        msg.channel.send(message);
+        // Send response back to the channel that requested it
+        message.channel.send(response);
     }
 });
 
